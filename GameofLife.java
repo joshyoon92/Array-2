@@ -3,52 +3,45 @@ public class GameofLife {
     // 0 -> 1 = -1
 
     public void gameOfLife(int[][] m) {
-
-        for (int row = 0; row < m.length; row++) {
-            for (int col = 0; col < m[0].length; col++) {
-
-                int living = calc(m, row, col);
-                if (m[row][col] == 1) {
-                    if (living > 3 || living < 2) {
-                        m[row][col] = 5;
-                    }
-                }
-                if (m[row][col] == 0) {
-                    if (living == 3) {
-                        m[row][col] = -1;
-                    }
+        int row = board.length;
+        int col = board[0].length;
+        for (int i=0; i<row; i++){
+            for (int j=0; j<col; j++){
+                int count = lifeCount(board, i, j);
+                if (board[i][j] == 1 && (count <2 || count >3)) {
+                    board[i][j] = -1;
+                }  else if (board[i][j] == 0 && count ==3) {
+                    board[i][j] = 2;
                 }
             }
         }
-        for (int row = 0; row < m.length; row++) {
-            for (int col = 0; col < m[0].length; col++) {
-                if (m[row][col] == 5) {
-                    m[row][col] = 0;
-                }
-                if (m[row][col] == -1) {
-                    m[row][col] = 1;
+        //if -1 => change it to 0
+        //if 2 => change to 1;
+        for (int i=0; i<row; i++){
+            for (int j=0; j<col; j++){
+                if (board[i][j] == -1) {
+                    board[i][j] = 0;
+                }  else if (board[i][j] == 2) {
+                    board[i][j] = 1;
                 }
             }
-        }
-
+        }        
     }
+    private int lifeCount(int[][] board, int row, int col) {
+        int[][] dirs = {{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1},{-1,-1}};
+        int rows = board.length;
+        int cols = board[0].length;
+        int count =0;
+        for (int[] dir: dirs) {
+            int adjRow = row+dir[0];
+            int adjCol = col+dir[1];
 
-    public int calc(int[][] m, int row, int col) {
-        int Rrow = m.length;
-        int Ccol = m[0].length;
-        int[][] neigh = { { 0, -1 }, { 0, 1 }, { 1, 0 }, { 1, 1 }, { 1, -1 }, { -1, -1 }, { -1, 0 }, { -1, 1 } };
-
-        int living = 0;
-        for (int i = 0; i < neigh.length; i++) {
-            int nRow = row + neigh[i][0];
-            int nCol = col + neigh[i][1];
-
-            if ((nRow >= 0 && nRow < Rrow) && (nCol >= 0 && nCol < Ccol)) {
-                if (m[nRow][nCol] == 1 || m[nRow][nCol] == 5) {
-                    living++;
+            if ((adjRow>=0 && adjRow<rows) &&(adjCol>=0 && adjCol<cols)){
+                if (board[adjRow][adjCol] == 1 || board[adjRow][adjCol] == -1) {
+                    count++;
                 }
             }
         }
-        return living;
+        return count;
     }
 }

@@ -5,20 +5,18 @@ public class MaxMin {
     // nums = [-3,-5,5,2,3,7];
 
     public List<Integer> maxMin(int[] nums) {
-        List<Integer> ans = new ArrayList<>();
-
-        int max = Integer.MIN_VALUE;
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < nums.length; i++) {
-
-            if (nums[i] > nums[i + 1]) {
-                max = Math.max(nums[i], max);
-                min = Math.min(nums[i + 1], min);
-            } else {
-                max = Math.max(nums[i + 1], max);
-                min = Math.min(nums[i], min);
-            }
+        ArrayList<Integer> sortedArr = new ArrayList<>();
+        for (int num : arr) {
+            sortedArr.add(num);
         }
-        return ans;
+        
+        // Sort ArrayList
+        Collections.sort(sortedArr);
+        
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(sortedArr.get(0));               
+        result.add(sortedArr.get(sortedArr.size() - 1)); 
+        
+        return result;
     }
 }
